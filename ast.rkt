@@ -1,11 +1,11 @@
 #lang plait
 
+;; Evaluator
+;; (calc : (Exp -> Number))
 (define-type Exp
   [num (n : Number)]
   [plus (left : Exp) (right : Exp)])
 
-; evaluator type:
-;(calc : (Exp -> Number))
 (define (calc e)
   (type-case Exp e
     [(num n) n]
@@ -25,3 +25,6 @@
       10)
 (test (calc (plus (num 0.1) (num 0.2))) 0.3)
 (test (calc (plus (num 0.1) (num 0.2))) 1/3)
+
+;; 2. Parser
+;; (parse : (S-Exp -> Exp))
