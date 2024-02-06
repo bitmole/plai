@@ -1,6 +1,8 @@
 #lang plait
 
-;; Evaluator
+(print-only-errors #true)
+
+;; 1. Evaluator
 ;; (calc : (Exp -> Number))
 (define-type Exp
   [num (n : Number)]
@@ -11,7 +13,7 @@
     [(num n) n]
     [(plus l r) (+ (calc l) (calc r))]))
 
-;(print-only-errors #true)
+
 (test (calc (num 1)) 1)
 (test (calc (num 2.3)) 2.3)
 (test (calc (plus (num 1) (num 2)))
@@ -47,3 +49,14 @@
                         (num 3))
                   (num 4))))
 (test/exn (parse `{1 + 2}) "symbol")
+
+;; 3. Executor (compose parsing & evaluation)
+;; (run: (S-Exp -> Number))
+(define (run s)
+  (calc (parse s)))
+
+(test (run `1) 1)
+(test (run `2.4) 2.4)
+(test (run `(+ 1 2)) 3)
+(test (run `(+ 1 (+ 2 3))) 6)
+(test (run `(+ 1 (+ (+ 2 3) 4))) 10)
